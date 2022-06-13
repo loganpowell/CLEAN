@@ -1,0 +1,15 @@
+{
+  "name": "clean-utils",
+  "version": "0.0.1",
+  "description": "CLEAN utilities",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@thi.ng/checks": "^3.2.1",
+    "json-to-graphql-query": "^2.2.4"
+  }
+}

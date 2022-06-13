@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "clean",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "D:\\projects\\aws\\amplify\\CLEAN\\amplify\\backend\\api\\clean\\schema.graphql",
+    "defaultAuthType": {
+      "mode": "AWS_IAM"
+    },
+    "additionalAuthTypes": [
+      {
+        "mode": "API_KEY",
+        "expirationTime": 365,
+        "apiKeyExpirationDate": "2023-06-10T16:44:41.995Z",
+        "keyDescription": "clean_test_key"
+      },
+      {
+        "mode": "AMAZON_COGNITO_USER_POOLS",
+        "cognitoUserPoolId": "authclean0e4526c9"
+      }
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "allowJs": false,
+        "allowSyntheticDefaultImports": true,
+        "declaration": true,
+        "downlevelIteration": true,
+        "esModuleInterop": true,
+        "importHelpers": true,
+        "lib": ["ES2017", "ES7", "ES6", "DOM"],
+        "module": "ES6",
+        "moduleResolution": "node",
+        "noImplicitAny": false,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "outDir": "lib",
+        "removeComments": false,
+        "resolveJsonModule": true,
+        "rootDir": "src",
+        "skipLibCheck": true,
+        "target": "ES6",
+        "watch": true
+    },
+    "include": ["src"],
+    "exclude": ["src/aws-exports.js", "node_modules", "src/misc"]
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "groupName": "CRUD",
+    "precedence": 1
+  },
+  {
+    "groupName": "CRU",
+    "precedence": 2
+  },
+  {
+    "groupName": "RU",
+    "precedence": 3
+  },
+  {
+    "groupName": "CR",
+    "precedence": 4
+  },
+  {
+    "groupName": "R",
+    "precedence": 5
+  }
+]
