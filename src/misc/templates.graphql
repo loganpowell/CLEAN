@@ -1,0 +1,69 @@
+mutation {
+  createAsset_0: createAsset(
+    input: { key: "title", nodeID: "some id", type: OG_TITLE, index: 1, value: "bleep" }
+  ) {
+    id
+    key
+    nodeID
+    type
+    index
+    value
+    createdAt
+    updatedAt
+  }
+  createAsset_1: createAsset(
+    input: { key: "description", nodeID: "some id", type: OG_DESCRIPTION, index: 0, value: "bloop" }
+  ) {
+    id
+    key
+    nodeID
+    type
+    index
+    value
+    createdAt
+    updatedAt
+  }
+}
+
+query MyQuery {
+  getNode(id: "some id") {
+    assets {
+      items {
+        id
+        createdAt
+        index
+        key
+        nodeID
+        owner
+        type
+        updatedAt
+        value
+      }
+    }
+  }
+}
+
+query anotherQuery {
+  listNodes {
+    items {
+      assets {
+        items {
+          id
+        }
+      }
+    }
+  }
+}
+
+mutation something {
+  createAsset_0: createAsset(
+    input: { key: "title", nodeID: "some id", type: OG_TITLE, index: 1, value: "bleep" }
+  ) {
+    id
+  }
+  createAsset_1: createAsset(
+    input: { key: "description", nodeID: "some id", type: OG_DESCRIPTION, index: 0, value: "bloop" }
+  ) {
+    id
+  }
+}

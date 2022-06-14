@@ -1,4 +1,11 @@
 {
-    "extends": "./tsconfig.json",
-    "exclude": ["**/*.test.js", "**/*.repl.js", "**/*.test.ts", "**/*.repl.ts"]
+  "extends": "./tsconfig.json",
+  "exclude": [
+    "src/misc",
+    "src/test",
+    "**/*.test.js",
+    "**/*.repl.js",
+    "**/*.test.ts",
+    "**/*.repl.ts"
+  ]
 }

@@ -9,7 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-amplify/api": "^4.0.42",
+    "@aws-amplify/storage": "^4.4.25",
+    "@thi.ng/atom": "^5.1.8",
     "@thi.ng/checks": "^3.2.1",
+    "dotenv": "^16.0.1",
     "json-to-graphql-query": "^2.2.4"
   }
 }
