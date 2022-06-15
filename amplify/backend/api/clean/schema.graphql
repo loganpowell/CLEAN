@@ -3,7 +3,7 @@
 # more about authorization rules here:
 # https://docs.amplify.aws/cli/graphql/authorization-rules
 input AMPLIFY {
-    globalAuthRule: AuthRule = { allow: public }
+  globalAuthRule: AuthRule = { allow: public }
 } # FOR TESTING ONLY!
 # A Node can either be a branch or a leaf. Therefore
 # presentations will vary. NodeType is used to display
@@ -19,22 +19,25 @@ input AMPLIFY {
 # will grow over time... substantially
 
 enum NodeType {
-    # --- 🔻 REQUIRED: DO NOT REPLACE/REMOVE 🔻 ---
-    R_ACCOUNT
-    # --- 🔺 REQUIRED: DO NOT REPLACE/REMOVE 🔺 ---
+  # --- 🔻 REQUIRED: DO NOT REPLACE/REMOVE 🔻 ---
+  R_ACCOUNT
+  # --- 🔺 REQUIRED: DO NOT REPLACE/REMOVE 🔺 ---
 
-    # Web App/Site
-    WEB_LANDING
-    WEB_SERIES # triggers EdgeType HAS_NEXT
-    WEB_COLLECTION
-    WEB_META
-    WEB_SLAB
+  # Web App/Site
+  WEB_LANDING
+  WEB_SERIES # triggers EdgeType HAS_NEXT
+  WEB_COLLECTION
+  WEB_META
+  WEB_SLAB
 
-    # UI Components
-    CMP_TABLE
+  # UI Components
+  CMP_TABLE
 
-    # Data
-    DIR # Directory/folder
+  # Data
+  DIR # Directory/folder
+  COL_LIST
+  COL_DICT
+  COL_SERIES
 }
 
 # 🔒 auth: see authorization docs for implementation of group
@@ -51,183 +54,147 @@ enum NodeType {
 # variable access
 
 type Node
-    @model(subscriptions: null)
-    @auth(
-        rules: [
-            { allow: owner, ownerField: "owner" } #   identityClaim: "email"   },
-            { allow: owner, operations: [read, update], ownerField: "editors" }
-            { allow: owner, operations: [read], ownerField: "readers" }
-            {
-                allow: groups
-                operations: [read, update]
-                groupsField: "editorGroups"
-            }
-            { allow: groups, operations: [read], groupsField: "readerGroups" }
-            { allow: groups, groups: ["CRUD"] }
-            {
-                allow: groups
-                operations: [create, read, update]
-                groups: ["CRU"]
-            }
-            { allow: groups, operations: [create, read], groups: ["CR"] }
-            { allow: groups, operations: [read], groups: ["R"] }
-            { allow: public, operations: [read], provider: iam }
-        ]
-    ) {
-    editors: [String]
-    readers: [String]
-    editorGroups: [String]
-    readerGroups: [String]
-    id: ID!
-    createdAt: AWSDateTime
-    updatedAt: AWSDateTime
-    ledgerID: ID
-    ledger: Ledger @hasOne(fields: ["ledgerID"])
-    objects: [Edge] @hasMany(indexName: "Objects_by_subject", fields: ["id"])
-    subjects: [Edge] @hasMany(indexName: "Subjects_by_object", fields: ["id"])
-    name: String
-    index: Int @default(value: "0")
-    type: NodeType!
-    status: NodeStatus!
-        @index(
-            name: "Nodes_by_status_type_updatedAt"
-            queryField: "nodesByStatusType"
-            sortKeyFields: ["type", "updatedAt"]
-        )
-    owner: String
-        @index(
-            name: "Nodes_by_owner_status_updatedAt"
-            queryField: "nodesByOwnerStatus"
-            sortKeyFields: ["status", "updatedAt"]
-        )
-        @index(
-            name: "Nodes_by_owner_type_updatedAt"
-            queryField: "nodesByOwnerType"
-            sortKeyFields: ["type", "updatedAt"]
-        )
-    assets: [Asset] @hasMany(indexName: "Assets_by_node", fields: ["id"])
+  @model(subscriptions: null)
+  @auth(
+    rules: [
+      { allow: owner, ownerField: "owner" } #   identityClaim: "email"   },
+      { allow: owner, operations: [read, update], ownerField: "editors" }
+      { allow: owner, operations: [read], ownerField: "readers" }
+      { allow: groups, operations: [read, update], groupsField: "editorGroups" }
+      { allow: groups, operations: [read], groupsField: "readerGroups" }
+      { allow: groups, groups: ["CRUD"] }
+      { allow: groups, operations: [create, read, update], groups: ["CRU"] }
+      { allow: groups, operations: [create, read], groups: ["CR"] }
+      { allow: groups, operations: [read], groups: ["R"] }
+      { allow: public, operations: [read], provider: iam }
+    ]
+  ) {
+  id: ID! @primaryKey
+  editors: [String]
+  readers: [String]
+  editorGroups: [String]
+  readerGroups: [String]
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  ledgerID: ID
+  ledger: Ledger @hasOne(fields: ["ledgerID"])
+  objects: [Edge] @hasMany(indexName: "Objects_by_subject", fields: ["id"])
+  subjects: [Edge] @hasMany(indexName: "Subjects_by_object", fields: ["id"])
+  name: String
+  index: Int @default(value: "0")
+  type: NodeType!
+  status: NodeStatus!
+    @index(
+      name: "Nodes_by_status_type_updatedAt"
+      queryField: "nodesByStatusType"
+      sortKeyFields: ["type", "updatedAt"]
+    )
+  owner: String
+    @index(
+      name: "Nodes_by_owner_status_updatedAt"
+      queryField: "nodesByOwnerStatus"
+      sortKeyFields: ["status", "updatedAt"]
+    )
+    @index(
+      name: "Nodes_by_owner_type_updatedAt"
+      queryField: "nodesByOwnerType"
+      sortKeyFields: ["type", "updatedAt"]
+    )
+  assets: [Asset] @hasMany(indexName: "Assets_by_node", fields: ["id"])
 }
 
 enum NodeStatus {
-    DELETED
-    PRIVATE
-    PUBLIC
-    REMOVED
-    REPLACED
-    SHARED
+  DELETED
+  PRIVATE
+  PUBLIC
+  REMOVED
+  REPLACED
+  SHARED
 }
 
 # Before instantiating an Edge, both connecting Nodes must
 # first exist or - at least - their IDs must be known
 type Edge
-    @model(subscriptions: null)
-    @auth(
-        rules: [
-            { allow: owner, ownerField: "owner" } #   identityClaim: "email"   },
-            { allow: owner, operations: [read, update], ownerField: "editors" }
-            { allow: owner, operations: [read], ownerField: "readers" }
-            {
-                allow: groups
-                operations: [read, update]
-                groupsField: "editorGroups"
-            }
-            { allow: groups, operations: [read], groupsField: "readerGroups" }
-            { allow: groups, groups: ["CRUD"] }
-            {
-                allow: groups
-                operations: [create, read, update]
-                groups: ["CRU"]
-            }
-            { allow: groups, operations: [read, update], groups: ["RU"] }
-            { allow: groups, operations: [create, read], groups: ["CR"] }
-            { allow: groups, operations: [read], groups: ["R"] }
-            { allow: public, operations: [read], provider: iam }
-        ]
-    ) {
-    editors: [String]
-    readers: [String]
-    editorGroups: [String]
-    readerGroups: [String]
-    createdAt: AWSDateTime
-    updatedAt: AWSDateTime
-    objectID: ID!
-        @index(
-            name: "Objects_by_subject"
-            sortKeyFields: ["weight", "createdAt"]
-        )
-    object: Node @belongsTo(fields: ["objectID"])
-    subjectID: ID!
-        @index(
-            name: "Subjects_by_object"
-            sortKeyFields: ["weight", "createdAt"]
-        )
-    subject: Node @belongsTo(fields: ["subjectID"])
-    id: ID! @primaryKey
-    type: EdgeType
-        @index(
-            name: "Edges_by_type"
-            queryField: "edgesByType"
-            sortKeyFields: ["updatedAt"]
-        )
-    owner: String
-        @index(
-            name: "Edges_by_owner_type"
-            queryField: "edgesByOwnerType"
-            sortKeyFields: ["type", "updatedAt"]
-        )
-    weight: Int @default(value: "0")
+  @model(subscriptions: null)
+  @auth(
+    rules: [
+      { allow: owner, ownerField: "owner" } #   identityClaim: "email"   },
+      { allow: owner, operations: [read, update], ownerField: "editors" }
+      { allow: owner, operations: [read], ownerField: "readers" }
+      { allow: groups, operations: [read, update], groupsField: "editorGroups" }
+      { allow: groups, operations: [read], groupsField: "readerGroups" }
+      { allow: groups, groups: ["CRUD"] }
+      { allow: groups, operations: [create, read, update], groups: ["CRU"] }
+      { allow: groups, operations: [read, update], groups: ["RU"] }
+      { allow: groups, operations: [create, read], groups: ["CR"] }
+      { allow: groups, operations: [read], groups: ["R"] }
+      { allow: public, operations: [read], provider: iam }
+    ]
+  ) {
+  editors: [String]
+  readers: [String]
+  editorGroups: [String]
+  readerGroups: [String]
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  objectID: ID! @index(name: "Objects_by_subject", sortKeyFields: ["weight", "createdAt"])
+  object: Node @belongsTo(fields: ["objectID"])
+  subjectID: ID! @index(name: "Subjects_by_object", sortKeyFields: ["weight", "createdAt"])
+  subject: Node @belongsTo(fields: ["subjectID"])
+  id: ID! @primaryKey
+  type: EdgeType
+    @index(name: "Edges_by_type", queryField: "edgesByType", sortKeyFields: ["updatedAt"])
+  owner: String
+    @index(
+      name: "Edges_by_owner_type"
+      queryField: "edgesByOwnerType"
+      sortKeyFields: ["type", "updatedAt"]
+    )
+  weight: Int @default(value: "0")
 }
 
 # PUBLIC ACCESS | queries: null
 type Asset
-    @model(queries: { get: null })
-    @auth(
-        rules: [
-            { allow: owner, ownerField: "owner" } #   identityClaim: "email"   },
-            { allow: groups, groups: ["CRUD"] }
-            {
-                allow: groups
-                operations: [create, read, update]
-                groups: ["CRU"]
-            }
-            { allow: groups, operations: [read, update], groups: ["RU"] }
-            { allow: groups, operations: [create, read], groups: ["CR"] }
-            { allow: groups, operations: [read], groups: ["R"] }
-            { allow: public, operations: [read], provider: iam }
-        ]
-    ) {
-    createdAt: AWSDateTime
-    updatedAt: AWSDateTime
-    nodeID: ID! @index(name: "Assets_by_node", sortKeyFields: ["index"])
-    node: Node @belongsTo(fields: ["nodeID"])
-    id: ID! @primaryKey
-    key: String!
-    index: Int @default(value: "0")
-    type: AssetType!
-    value: String
+  @model(queries: { get: null }) # removes `id` from graphql API
+  @auth(
+    rules: [
+      { allow: owner, ownerField: "owner" } #   identityClaim: "email"   },
+      { allow: groups, groups: ["CRUD"] }
+      { allow: groups, operations: [create, read, update], groups: ["CRU"] }
+      { allow: groups, operations: [read, update], groups: ["RU"] }
+      { allow: groups, operations: [create, read], groups: ["CR"] }
+      { allow: groups, operations: [read], groups: ["R"] }
+      { allow: public, operations: [read], provider: iam }
+    ]
+  ) {
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  nodeID: ID! @index(name: "Assets_by_node", sortKeyFields: ["index"])
+  node: Node @belongsTo(fields: ["nodeID"])
+  id: ID! @primaryKey
+  key: String!
+  index: Int @default(value: "0")
+  type: AssetType!
+  value: String
 }
 
 #private and admin access (analytics)
 type Ledger
-    @model
-    @auth(
-        rules: [
-            { allow: owner, operations: [create, read], ownerField: "owner" } #   identityClaim: "email"   }
-            {
-                allow: groups
-                operations: [create, read]
-                groups: ["CRUD", "CRU", "CR"]
-            }
-        ]
-    ) {
-    id: ID!
-    createdAt: AWSDateTime
-    updatedAt: AWSDateTime
-    nodeID: ID! @index(name: "Ledger_by_node")
-    # bidirectional "hasOne" relationship cannot be represented
-    # in iOS (analtics won't be mobile)
-    node: Node @belongsTo(fields: ["nodeID"])
-    events: [Event] @hasMany(indexName: "Events_by_ledger")
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, read], ownerField: "owner" } #   identityClaim: "email"   }
+      { allow: groups, operations: [create, read], groups: ["CRUD", "CRU", "CR"] }
+    ]
+  ) {
+  id: ID!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  nodeID: ID! @index(name: "Ledger_by_node")
+  # bidirectional "hasOne" relationship cannot be represented
+  # in iOS (analtics won't be mobile)
+  node: Node @belongsTo(fields: ["nodeID"])
+  events: [Event] @hasMany(indexName: "Events_by_ledger")
 }
 
 # Events contain the graphql queries/mutations/etc that are
@@ -239,33 +206,29 @@ type Ledger
 # If an Edge is created, both Nodes' Ledger is updated to
 # reflect the Edge addition.
 type Event
-    @model
-    @auth(
-        rules: [
-            { allow: owner, operations: [create, read], ownerField: "owner" }
-            {
-                allow: groups
-                operations: [create, read]
-                groups: ["CRUD", "CRU", "CR"]
-            }
-        ]
-    ) {
-    id: ID!
-    createdAt: AWSDateTime
-    updatedAt: AWSDateTime
-    ledgerID: ID! @index(name: "Events_by_ledger")
-    ledger: Ledger @belongsTo(fields: ["ledgerID"])
-    type: EventType!
-    payload: String!
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, read], ownerField: "owner" }
+      { allow: groups, operations: [create, read], groups: ["CRUD", "CRU", "CR"] }
+    ]
+  ) {
+  id: ID!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  ledgerID: ID! @index(name: "Events_by_ledger")
+  ledger: Ledger @belongsTo(fields: ["ledgerID"])
+  type: EventType!
+  payload: String!
 }
 
 enum EdgeType {
-    # Human to Asset
-    AUTHORED
-    # Sibling/Sequence
-    HAS_NEXT
-    # Hierachical
-    HAS_CHILD
+  # Human to Asset
+  AUTHORED
+  # Sibling/Sequence
+  HAS_NEXT
+  # Hierachical
+  HAS_CHILD
 }
 
 # component schemas:
@@ -277,99 +240,99 @@ enum EdgeType {
 #   as form fields and the values the AssetType (mapped to
 #   an Array as Object.entries)
 enum AssetType {
-    # Documentation #############################
-    """
-    A [description](http://spec.graphql.org/June2018/#sec-Descriptions),
-    here in parentheses, is `markdown` friendly!
-    """
-    DEPRECATED @deprecated(reason: "the reason is _also_ `markdown` friendly!")
+  # Documentation #############################
+  """
+  A [description](http://spec.graphql.org/June2018/#sec-Descriptions),
+  here in parentheses, is `markdown` friendly!
+  """
+  DEPRECATED @deprecated(reason: "the reason is _also_ `markdown` friendly!")
 
-    # Multimedia Assets ##############################
-    TXT_TXT
-    TXT_CSV
-    TXT_CSS
-    TXT_HTML
-    TXT_XML
-    TXT_ICS
+  # Multimedia Assets ##############################
+  TXT_TXT
+  TXT_CSV
+  TXT_CSS
+  TXT_HTML
+  TXT_XML
+  TXT_ICS
 
-    IMG
-    IMG_TIFF
-    IMG_JPEG
-    IMG_JPG
-    IMG_GIF
-    IMG_PNG
-    IMG_BMP
-    IMG_SVG
-    IMG_WEBP
+  IMG
+  IMG_TIFF
+  IMG_JPEG
+  IMG_JPG
+  IMG_GIF
+  IMG_PNG
+  IMG_BMP
+  IMG_SVG
+  IMG_WEBP
 
-    AUD
-    AUD_WEBA
-    AUD_AAC
-    AUD_MP3
-    AUD_WAV
-    AUD_OGA
-    AUD_OPUS
+  AUD
+  AUD_WEBA
+  AUD_AAC
+  AUD_MP3
+  AUD_WAV
+  AUD_OGA
+  AUD_OPUS
 
-    VID
-    VID_WEBM
-    VID_MP4
-    VID_OGV
-    VID_AVI
-    VID_TS
-    VID_MPEG
+  VID
+  VID_WEBM
+  VID_MP4
+  VID_OGV
+  VID_AVI
+  VID_TS
+  VID_MPEG
 
-    APP_JSON
-    APP_JSONLD
-    APP_RTF
-    APP_PDF
-    APP_DOC
-    APP_DOCX
-    APP_XLS
-    APP_XLSX
-    APP_PPT
-    APP_ODP
-    APP_ODS
-    APP_ODT
-    APP_ICO
+  APP_JSON
+  APP_JSONLD
+  APP_RTF
+  APP_PDF
+  APP_DOC
+  APP_DOCX
+  APP_XLS
+  APP_XLSX
+  APP_PPT
+  APP_ODP
+  APP_ODS
+  APP_ODT
+  APP_ICO
 
-    ZIP_ZIP
-    ZIP_RAR
-    ZIP_7Z
+  ZIP_ZIP
+  ZIP_RAR
+  ZIP_7Z
 
-    # open graph ⚠ needs client-side validation (custom UI) for optimal/max char length
-    # optimal   | max
-    OG_TITLE # 55        | 95
-    OG_DESCRIPTION # 55        | 200
-    OG_TYPE
-    OG_IMAGE # open graph (https://ogp.me/#metadata)
-    OG_AUDIO
-    OG_VIDEO
+  # open graph ⚠ needs client-side validation (custom UI) for optimal/max char length
+  # optimal   | max
+  OG_TITLE # 55        | 95
+  OG_DESCRIPTION # 55        | 200
+  OG_TYPE
+  OG_IMAGE # open graph (https://ogp.me/#metadata)
+  OG_AUDIO
+  OG_VIDEO
 
-    # Text (Markdown enabled) #######################
-    MD_LONG
-    MD_SHORT
-    MD_LEDE
+  # Text (Markdown enabled) #######################
+  MD_LONG
+  MD_SHORT
+  MD_LEDE
 
-    # Meta: each tag must be a separate resource-type in order for it to be able to be searched by
-    META_DATA
-    META_MAP
-    META_VIZ
-    META_API
+  # Meta: each tag must be a separate resource-type in order for it to be able to be searched by
+  META_DATA
+  META_MAP
+  META_VIZ
+  META_API
 
-    # Files ######################################
-    FILE
-    FILE_PDF
-    FILE_KML
-    FILE_SHP
-    FILE_CSV
-    FILE_JSON
+  # Files ######################################
+  FILE
+  FILE_PDF
+  FILE_KML
+  FILE_SHP
+  FILE_CSV
+  FILE_JSON
 }
 
 enum EventType {
-    CREATE
-    READ
-    UPDATE
-    DELETE
+  CREATE
+  READ
+  UPDATE
+  DELETE
 }
 
 #                              888   _                   /

@@ -1,32 +1,5 @@
-mutation {
-  createAsset_0: createAsset(
-    input: { key: "title", nodeID: "some id", type: OG_TITLE, index: 1, value: "bleep" }
-  ) {
-    id
-    key
-    nodeID
-    type
-    index
-    value
-    createdAt
-    updatedAt
-  }
-  createAsset_1: createAsset(
-    input: { key: "description", nodeID: "some id", type: OG_DESCRIPTION, index: 0, value: "bloop" }
-  ) {
-    id
-    key
-    nodeID
-    type
-    index
-    value
-    createdAt
-    updatedAt
-  }
-}
-
 query MyQuery {
-  getNode(id: "some id") {
+  getNode(id: "someID") {
     assets {
       items {
         id
@@ -43,6 +16,39 @@ query MyQuery {
   }
 }
 
+#{
+#  "data": {
+#    "getNode": {
+#      "assets": {
+#        "items": [
+#          {
+#            "id": "0e045d08-2e9b-4a42-8e5c-fe238d412f26",
+#            "createdAt": "2022-06-14T13:53:34.351Z",
+#            "index": 0,
+#            "key": "description",
+#            "nodeID": "someID",
+#            "owner": "212b33b6-214e-4e5f-957f-ff5e59259ca3",
+#            "type": "OG_DESCRIPTION",
+#            "updatedAt": "2022-06-14T13:53:34.351Z",
+#            "value": "bloop"
+#          },
+#          {
+#            "id": "d36aa343-0421-43c3-8503-391273fd4234",
+#            "createdAt": "2022-06-14T13:53:34.288Z",
+#            "index": 1,
+#            "key": "title",
+#            "nodeID": "someID",
+#            "owner": "212b33b6-214e-4e5f-957f-ff5e59259ca3",
+#            "type": "OG_TITLE",
+#            "updatedAt": "2022-06-14T13:53:34.288Z",
+#            "value": "bleep"
+#          }
+#        ]
+#      }
+#    }
+#  }
+#}
+
 query anotherQuery {
   listNodes {
     items {
@@ -55,15 +61,70 @@ query anotherQuery {
   }
 }
 
+mutation createaNode {
+  createNode(input: { id: "someID", name: "Blooperes", type: WEB_SLAB, status: PRIVATE }) {
+    id
+  }
+}
+
 mutation something {
   createAsset_0: createAsset(
-    input: { key: "title", nodeID: "some id", type: OG_TITLE, index: 1, value: "bleep" }
+    input: { key: "title", nodeID: "someID", type: OG_TITLE, index: 1, value: "bleep" }
   ) {
     id
   }
   createAsset_1: createAsset(
-    input: { key: "description", nodeID: "some id", type: OG_DESCRIPTION, index: 0, value: "bloop" }
+    input: { key: "description", nodeID: "someID", type: OG_DESCRIPTION, index: 0, value: "bloop" }
   ) {
     id
+  }
+}
+
+#{
+#  "data": {
+#    "createAsset_0": {
+#      "id": "134c328c-d2a8-4385-9da2-e87b4f9819d3"
+#    },
+#    "createAsset_1": {
+#      "id": "0387fe6b-ac79-48b2-92ba-6511ce628903"
+#    }
+#  }
+#}
+
+#conditional error
+
+#"errors": [
+#    {
+#      "path": [
+#        "deleteWalletProperty"
+#      ],
+#      "data": null,
+#      "errorType": "DynamoDB:ConditionalCheckFailedException",
+#      "errorInfo": null,
+#      "locations": [
+#        {
+#          "line": 12,
+#          "column": 3,
+#          "sourceName": null
+#        }
+#      ],
+#      "message": "The conditional request failed (Service: DynamoDb, Status Code: 400, Request ID: E3PR9OM6M5J1QBHKNT8E4SM1DJVV4KQNSO5AEMVJF66Q9ASUAAJG, Extended Request ID: null)"
+#    }
+#  ]
+
+query list {
+  list(
+    filter: {
+      and: [
+        { available: { eq: true } }
+        { id: { eq: "XXXXX" } }
+        { or: [{ promo: { eq: true } }, { price: { between: [40, 45] } }] }
+      ]
+    }
+  ) {
+    items {
+      id
+      price
+    }
   }
 }

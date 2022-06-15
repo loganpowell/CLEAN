@@ -9,11 +9,11 @@ export const onCreateAsset = /* GraphQL */ `
       updatedAt
       nodeID
       node {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -55,11 +55,11 @@ export const onUpdateAsset = /* GraphQL */ `
       updatedAt
       nodeID
       node {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -101,11 +101,11 @@ export const onDeleteAsset = /* GraphQL */ `
       updatedAt
       nodeID
       node {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -148,11 +148,11 @@ export const onCreateLedger = /* GraphQL */ `
       updatedAt
       nodeID
       node {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -203,11 +203,11 @@ export const onUpdateLedger = /* GraphQL */ `
       updatedAt
       nodeID
       node {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -258,11 +258,11 @@ export const onDeleteLedger = /* GraphQL */ `
       updatedAt
       nodeID
       node {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -318,11 +318,11 @@ export const onCreateEvent = /* GraphQL */ `
         updatedAt
         nodeID
         node {
+          id
           editors
           readers
           editorGroups
           readerGroups
-          id
           createdAt
           updatedAt
           ledgerID
@@ -357,11 +357,11 @@ export const onUpdateEvent = /* GraphQL */ `
         updatedAt
         nodeID
         node {
+          id
           editors
           readers
           editorGroups
           readerGroups
-          id
           createdAt
           updatedAt
           ledgerID
@@ -396,11 +396,11 @@ export const onDeleteEvent = /* GraphQL */ `
         updatedAt
         nodeID
         node {
+          id
           editors
           readers
           editorGroups
           readerGroups
-          id
           createdAt
           updatedAt
           ledgerID

@@ -13,11 +13,11 @@ export const updateLedger = /* GraphQL */ `
       updatedAt
       nodeID
       node {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -71,11 +71,11 @@ export const deleteLedger = /* GraphQL */ `
       updatedAt
       nodeID
       node {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -134,11 +134,11 @@ export const updateEvent = /* GraphQL */ `
         updatedAt
         nodeID
         node {
+          id
           editors
           readers
           editorGroups
           readerGroups
-          id
           createdAt
           updatedAt
           ledgerID
@@ -176,11 +176,11 @@ export const deleteEvent = /* GraphQL */ `
         updatedAt
         nodeID
         node {
+          id
           editors
           readers
           editorGroups
           readerGroups
-          id
           createdAt
           updatedAt
           ledgerID
@@ -208,11 +208,11 @@ export const createNode = /* GraphQL */ `
     $condition: ModelNodeConditionInput
   ) {
     createNode(input: $input, condition: $condition) {
+      id
       editors
       readers
       editorGroups
       readerGroups
-      id
       createdAt
       updatedAt
       ledgerID
@@ -222,11 +222,11 @@ export const createNode = /* GraphQL */ `
         updatedAt
         nodeID
         node {
+          id
           editors
           readers
           editorGroups
           readerGroups
-          id
           createdAt
           updatedAt
           ledgerID
@@ -303,11 +303,11 @@ export const updateNode = /* GraphQL */ `
     $condition: ModelNodeConditionInput
   ) {
     updateNode(input: $input, condition: $condition) {
+      id
       editors
       readers
       editorGroups
       readerGroups
-      id
       createdAt
       updatedAt
       ledgerID
@@ -317,11 +317,11 @@ export const updateNode = /* GraphQL */ `
         updatedAt
         nodeID
         node {
+          id
           editors
           readers
           editorGroups
           readerGroups
-          id
           createdAt
           updatedAt
           ledgerID
@@ -398,11 +398,11 @@ export const deleteNode = /* GraphQL */ `
     $condition: ModelNodeConditionInput
   ) {
     deleteNode(input: $input, condition: $condition) {
+      id
       editors
       readers
       editorGroups
       readerGroups
-      id
       createdAt
       updatedAt
       ledgerID
@@ -412,11 +412,11 @@ export const deleteNode = /* GraphQL */ `
         updatedAt
         nodeID
         node {
+          id
           editors
           readers
           editorGroups
           readerGroups
-          id
           createdAt
           updatedAt
           ledgerID
@@ -501,11 +501,11 @@ export const createEdge = /* GraphQL */ `
       updatedAt
       objectID
       object {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -533,11 +533,11 @@ export const createEdge = /* GraphQL */ `
       }
       subjectID
       subject {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -584,11 +584,11 @@ export const updateEdge = /* GraphQL */ `
       updatedAt
       objectID
       object {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -616,11 +616,11 @@ export const updateEdge = /* GraphQL */ `
       }
       subjectID
       subject {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -667,11 +667,11 @@ export const deleteEdge = /* GraphQL */ `
       updatedAt
       objectID
       object {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -699,11 +699,11 @@ export const deleteEdge = /* GraphQL */ `
       }
       subjectID
       subject {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -746,11 +746,11 @@ export const createAsset = /* GraphQL */ `
       updatedAt
       nodeID
       node {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -795,11 +795,11 @@ export const updateAsset = /* GraphQL */ `
       updatedAt
       nodeID
       node {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -844,11 +844,11 @@ export const deleteAsset = /* GraphQL */ `
       updatedAt
       nodeID
       node {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -894,11 +894,11 @@ export const createLedger = /* GraphQL */ `
       updatedAt
       nodeID
       node {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -957,11 +957,11 @@ export const createEvent = /* GraphQL */ `
         updatedAt
         nodeID
         node {
+          id
           editors
           readers
           editorGroups
           readerGroups
-          id
           createdAt
           updatedAt
           ledgerID

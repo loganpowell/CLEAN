@@ -1,16 +1,19 @@
 import { EnumType, jsonToGraphQLQuery } from "json-to-graphql-query"
-import { assetTemplate2GqlJsonCRUDs } from "./templates"
+import { assetProps2GqlJsonCRUDs } from "./assets"
 
-const { json, call } = assetTemplate2GqlJsonCRUDs({
+const { json, call } = assetProps2GqlJsonCRUDs({
   description: "some description",
   title: "some title",
 })
 
 const { C } = json
 
-const mutation = C("some id", {
-  title: "bleep",
-  description: "bloop",
+const mutation = C({
+  nodeID: "some id",
+  props: {
+    title: "bleep",
+    description: "bloop",
+  },
 })
 
 jsonToGraphQLQuery({ mutation }, { pretty: true }) //?
@@ -32,7 +35,7 @@ mutation {
 const { R } = call
 
 const test_R_call = async () => {
-  const query = await R({ nodeID: "some id", aliasFor: "someNodes", index: 1 })
+  const query = await R({ nodeID: "some id" })
   console.log({ query })
 
   const query2 = await R({ nodeID: "some id" })

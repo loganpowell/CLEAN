@@ -5,11 +5,11 @@
 export const getNode = /* GraphQL */ `
   query GetNode($id: ID!) {
     getNode(id: $id) {
+      id
       editors
       readers
       editorGroups
       readerGroups
-      id
       createdAt
       updatedAt
       ledgerID
@@ -19,11 +19,11 @@ export const getNode = /* GraphQL */ `
         updatedAt
         nodeID
         node {
+          id
           editors
           readers
           editorGroups
           readerGroups
-          id
           createdAt
           updatedAt
           ledgerID
@@ -96,17 +96,25 @@ export const getNode = /* GraphQL */ `
 `;
 export const listNodes = /* GraphQL */ `
   query ListNodes(
+    $id: ID
     $filter: ModelNodeFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listNodes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listNodes(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -154,11 +162,11 @@ export const nodesByStatusType = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -206,11 +214,11 @@ export const nodesByOwnerStatus = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -258,11 +266,11 @@ export const nodesByOwnerType = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -303,11 +311,11 @@ export const getEdge = /* GraphQL */ `
       updatedAt
       objectID
       object {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -335,11 +343,11 @@ export const getEdge = /* GraphQL */ `
       }
       subjectID
       subject {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -396,11 +404,11 @@ export const listEdges = /* GraphQL */ `
         updatedAt
         objectID
         object {
+          id
           editors
           readers
           editorGroups
           readerGroups
-          id
           createdAt
           updatedAt
           ledgerID
@@ -412,11 +420,11 @@ export const listEdges = /* GraphQL */ `
         }
         subjectID
         subject {
+          id
           editors
           readers
           editorGroups
           readerGroups
-          id
           createdAt
           updatedAt
           ledgerID
@@ -461,11 +469,11 @@ export const edgesByType = /* GraphQL */ `
         updatedAt
         objectID
         object {
+          id
           editors
           readers
           editorGroups
           readerGroups
-          id
           createdAt
           updatedAt
           ledgerID
@@ -477,11 +485,11 @@ export const edgesByType = /* GraphQL */ `
         }
         subjectID
         subject {
+          id
           editors
           readers
           editorGroups
           readerGroups
-          id
           createdAt
           updatedAt
           ledgerID
@@ -526,11 +534,11 @@ export const edgesByOwnerType = /* GraphQL */ `
         updatedAt
         objectID
         object {
+          id
           editors
           readers
           editorGroups
           readerGroups
-          id
           createdAt
           updatedAt
           ledgerID
@@ -542,11 +550,11 @@ export const edgesByOwnerType = /* GraphQL */ `
         }
         subjectID
         subject {
+          id
           editors
           readers
           editorGroups
           readerGroups
-          id
           createdAt
           updatedAt
           ledgerID
@@ -573,11 +581,11 @@ export const getLedger = /* GraphQL */ `
       updatedAt
       nodeID
       node {
+        id
         editors
         readers
         editorGroups
         readerGroups
-        id
         createdAt
         updatedAt
         ledgerID
@@ -633,11 +641,11 @@ export const listLedgers = /* GraphQL */ `
         updatedAt
         nodeID
         node {
+          id
           editors
           readers
           editorGroups
           readerGroups
-          id
           createdAt
           updatedAt
           ledgerID
@@ -669,11 +677,11 @@ export const getEvent = /* GraphQL */ `
         updatedAt
         nodeID
         node {
+          id
           editors
           readers
           editorGroups
           readerGroups
-          id
           createdAt
           updatedAt
           ledgerID
